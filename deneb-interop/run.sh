@@ -1,15 +1,15 @@
 #!/bin/bash
-#set -x
+set -x
 set -e
 
 CHAINID=32382
 GENESIS=$(($(date +%s) + 5))
 echo "genesis time: $GENESIS"
 
-GETH=$HOME/src/mdehoog/go-ethereum/build/bin/geth
-SRCHOME=$HOME/src
-PRYSMSRC=$SRCHOME/prysmaticlabs/prysm
-BLOBUTILSRC=$SRCHOME/inphi/blob-utils
+SRCHOME=$HOME/offchain/4844
+GETH=$SRCHOME/go-ethereum-mdehoog/build/bin/geth
+PRYSMSRC=$SRCHOME/prysm
+BLOBUTILSRC=$SRCHOME/blob-utils
 BLOBUTILSCMD=$BLOBUTILSRC/blob-utils
 SCRIPTDIR=$PWD # assumes this is run from the dir where the script lives
 
@@ -18,7 +18,7 @@ go build -o $BLOBUTILSCMD
 chmod +x $BLOBUTILSCMD
 popd
 
-DATADIR=/var/lib/db/deneb-interop/${GENESIS}
+DATADIR=$SRCHOME/deneb-interop-data/${GENESIS}
 mkdir -p $DATADIR
 
 BLOB1=$DATADIR/blob-1
