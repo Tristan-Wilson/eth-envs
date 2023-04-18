@@ -144,6 +144,10 @@ $GETH --datadir $GETHDATA_1 init $DATADIR/genesis.json 1> $LOGDIR/geth-init_1.st
 setsid $($GETH \
 	--log.file=$GETH_1_LOG \
 	--http \
+	--http.addr 0.0.0.0 \
+	--ws \
+	--ws.addr 0.0.0.0 \
+	--ws.port 8546 \
         --datadir=$GETHDATA_1 \
         --nodiscover \
         --syncmode=full \
@@ -205,7 +209,7 @@ setsid $($GETH \
         --password=$GETH_PASSWORD_FILE \
 	--authrpc.jwtsecret=$JWT_PATH \
 	--authrpc.port=8552 \
-	--http.port=8546 \
+	--http.port=18545 \
 	--port=30304 \
 	1> $LOGDIR/geth-2.stdout 2> $LOGDIR/geth-2.stderr) &
 PID_GETH_2=$!
