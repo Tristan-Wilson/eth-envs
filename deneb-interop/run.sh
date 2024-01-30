@@ -153,6 +153,7 @@ $GETHEXE --datadir $GETHDATA_1 init $DATADIR/genesis.json 1> $LOGDIR/geth-init_1
 setsid $($GETHEXE \
 	--log.file=$GETH_1_LOG \
 	--http \
+	--http.api web3,eth,debug \
         --datadir=$GETHDATA_1 \
         --nodiscover \
         --syncmode=full \
