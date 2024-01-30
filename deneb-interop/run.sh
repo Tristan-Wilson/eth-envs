@@ -173,6 +173,7 @@ WAITTIME=$(($CANCUN - $(date +%s)))
 echo "sleeping $WAITTIME seconds to wait for cancun fork"
 sleep $WAITTIME
 
+<<<COMMENTED
 ADDR_BN1=$(grep 'Node started p2p server' $CL_LOGS_1 | sed -E 's/.*multiAddr=\"(.*)\" prefix=.*/\1/')
 echo "beacon-node 2 will peer with beacon-node 1 multiaddr = $ADDR_BN1"
 
@@ -220,10 +221,11 @@ setsid $($GETHEXE \
 PID_GETH_2=$!
 log_pid $PID_GETH_2 "geth 2"
 
+COMMENTED
+
 #$BLOBUTILSCMD tx --blob-file=$BLOB1 --private-key 2e0834786285daccd064ca17f1654f67b4aef298acbb82cef9ec422fb4975622 --to 0x0 --gas-price 100000000000 --gas-limit 1000000 --chain-id 32382 --rpc-url http://localhost:8545
 #$BLOBUTILSCMD tx --blob-file=$BLOB2 --private-key 2e0834786285daccd064ca17f1654f67b4aef298acbb82cef9ec422fb4975622 --to 0x0 --gas-price 100000000000 --gas-limit 1000000 --chain-id 32382 --rpc-url http://localhost:8545
 #$BLOBUTILSCMD tx --blob-file=$BLOB3 --private-key 2e0834786285daccd064ca17f1654f67b4aef298acbb82cef9ec422fb4975622 --to 0x0 --gas-price 100000000000 --gas-limit 1000000 --chain-id 32382 --rpc-url http://localhost:8545
 
 echo "sleeping until infinity or ctrl+c, whichever comes first"
 sleep infinity
-
