@@ -4,7 +4,7 @@ set -e
 
 CHAINID=32382
 SRCHOME=$HOME/src
-PRYSMSRC=$SRCHOME/prysmaticlabs/prysm
+PRYSMSRC=/home/tristan/offchain/4844/prysm
 
 # do the slow build stuff before computing genesis time
 pushd $PRYSMSRC
@@ -29,7 +29,7 @@ cp -f $BAZEL_V_CMD $V_CMD
 
 popd
 
-BLOBUTILSRC=$SRCHOME/inphi/blob-utils
+BLOBUTILSRC=/home/tristan/offchain/4844/blob-utils
 BLOBUTILSCMD=$BLOBUTILSRC/blob-utils
 pushd $BLOBUTILSRC
 go build -o $BLOBUTILSCMD
@@ -39,10 +39,10 @@ popd
 GENESIS=$(($(date +%s) + 5))
 echo "genesis time: $GENESIS"
 
-GETHEXE=$HOME/src/ethereum/go-ethereum/build/bin/geth
+GETHEXE=/home/tristan/offchain/4844/go-ethereum-upstream/build/bin/geth
 SCRIPTDIR=$PWD # assumes this is run from the dir where the script lives
 
-DATADIR=/var/lib/db/deneb-interop/${GENESIS}
+DATADIR=/home/tristan/offchain/4844/devnet-12-data/${GENESIS}
 mkdir -p $DATADIR
 
 BLOB1=$DATADIR/blob-1
@@ -173,55 +173,55 @@ WAITTIME=$(($CANCUN - $(date +%s)))
 echo "sleeping $WAITTIME seconds to wait for cancun fork"
 sleep $WAITTIME
 
-<<<COMMENTED
-ADDR_BN1=$(grep 'Node started p2p server' $CL_LOGS_1 | sed -E 's/.*multiAddr=\"(.*)\" prefix=.*/\1/')
-echo "beacon-node 2 will peer with beacon-node 1 multiaddr = $ADDR_BN1"
-
-echo "beacon-node 2 logs at $CL_LOGS_2"
-setsid $($BC_CMD \
-	--log-file=$CL_LOGS_2 \
-	--datadir=$CL_DATADIR_2 \
-        --min-sync-peers=1 \
-        --genesis-state=$DATADIR/genesis.ssz \
-        --interop-eth1data-votes \
-        --bootstrap-node= \
-        --chain-config-file=$DATADIR/config.yml \
-        --chain-id=$CHAINID \
-        --accept-terms-of-use \
-        --jwt-secret=$JWT_PATH \
-        --execution-endpoint=http://localhost:8552 \
-        --rpc-port=4002 \
-        --p2p-tcp-port=13002 \
-        --p2p-udp-port=12002 \
-        --grpc-gateway-port=3502 \
-        --monitoring-port=8083 \
-	--force-clear-db \
-	--verbosity=debug \
-	--peer=$ADDR_BN1 \
-	1> $LOGDIR/beacon-2.stdout 2> $LOGDIR/beacon-2.stderr) &
-PID_BN2=$!
-log_pid $PID_BN2 "beacon node 2"
-
-echo "geth2 logs at $GETH_2_LOG"
-$GETHEXE --datadir $GETHDATA_2 init $DATADIR/genesis.json 1> $LOGDIR/geth-init_2.stdout 2> $LOGDIR/geth-init_2.stderr
-setsid $($GETHEXE \
-	--log.file=$GETH_2_LOG \
-	--http \
-        --datadir=$GETHDATA_2 \
-        --nodiscover \
-        --syncmode=full \
-        --allow-insecure-unlock \
-        --unlock=0x123463a4b065722e99115d6c222f267d9cabb524 \
-        --password=$GETH_PASSWORD_FILE \
-	--authrpc.jwtsecret=$JWT_PATH \
-	--authrpc.port=8552 \
-	--http.port=8546 \
-	--port=30304 \
-	1> $LOGDIR/geth-2.stdout 2> $LOGDIR/geth-2.stderr) &
-PID_GETH_2=$!
-log_pid $PID_GETH_2 "geth 2"
-
-COMMENTED
+#<<<COMMENTED
+#ADDR_BN1=$(grep 'Node started p2p server' $CL_LOGS_1 | sed -E 's/.*multiAddr=\"(.*)\" prefix=.*/\1/')
+#echo "beacon-node 2 will peer with beacon-node 1 multiaddr = $ADDR_BN1"
+#
+#echo "beacon-node 2 logs at $CL_LOGS_2"
+#setsid $($BC_CMD \
+#	--log-file=$CL_LOGS_2 \
+#	--datadir=$CL_DATADIR_2 \
+#        --min-sync-peers=1 \
+#        --genesis-state=$DATADIR/genesis.ssz \
+#        --interop-eth1data-votes \
+#        --bootstrap-node= \
+#        --chain-config-file=$DATADIR/config.yml \
+#        --chain-id=$CHAINID \
+#        --accept-terms-of-use \
+#        --jwt-secret=$JWT_PATH \
+#        --execution-endpoint=http://localhost:8552 \
+#        --rpc-port=4002 \
+#        --p2p-tcp-port=13002 \
+#        --p2p-udp-port=12002 \
+#        --grpc-gateway-port=3502 \
+#        --monitoring-port=8083 \
+#	--force-clear-db \
+#	--verbosity=debug \
+#	--peer=$ADDR_BN1 \
+#	1> $LOGDIR/beacon-2.stdout 2> $LOGDIR/beacon-2.stderr) &
+#PID_BN2=$!
+#log_pid $PID_BN2 "beacon node 2"
+#
+#echo "geth2 logs at $GETH_2_LOG"
+#$GETHEXE --datadir $GETHDATA_2 init $DATADIR/genesis.json 1> $LOGDIR/geth-init_2.stdout 2> $LOGDIR/geth-init_2.stderr
+#setsid $($GETHEXE \
+#	--log.file=$GETH_2_LOG \
+#	--http \
+#        --datadir=$GETHDATA_2 \
+#        --nodiscover \
+#        --syncmode=full \
+#        --allow-insecure-unlock \
+#        --unlock=0x123463a4b065722e99115d6c222f267d9cabb524 \
+#        --password=$GETH_PASSWORD_FILE \
+#	--authrpc.jwtsecret=$JWT_PATH \
+#	--authrpc.port=8552 \
+#	--http.port=8546 \
+#	--port=30304 \
+#	1> $LOGDIR/geth-2.stdout 2> $LOGDIR/geth-2.stderr) &
+#PID_GETH_2=$!
+#log_pid $PID_GETH_2 "geth 2"
+#
+#COMMENTED
 
 #$BLOBUTILSCMD tx --blob-file=$BLOB1 --private-key 2e0834786285daccd064ca17f1654f67b4aef298acbb82cef9ec422fb4975622 --to 0x0 --gas-price 100000000000 --gas-limit 1000000 --chain-id 32382 --rpc-url http://localhost:8545
 #$BLOBUTILSCMD tx --blob-file=$BLOB2 --private-key 2e0834786285daccd064ca17f1654f67b4aef298acbb82cef9ec422fb4975622 --to 0x0 --gas-price 100000000000 --gas-limit 1000000 --chain-id 32382 --rpc-url http://localhost:8545
